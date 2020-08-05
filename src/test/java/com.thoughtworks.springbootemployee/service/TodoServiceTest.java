@@ -61,4 +61,19 @@ public class TodoServiceTest {
         //then
         Mockito.verify(mockTodoReposition).deleteById(1);
     }
+
+    @Test
+    void should_return_changed_todo_when_change_status_given_id_and_todo() {
+        //given
+        Todo todo = new Todo(1, "test", false);
+        TodoRepository mockTodoReposition = mock(TodoRepository.class);
+        TodoService todoService = new TodoService(mockTodoReposition);
+        given(mockTodoReposition.findById(1)).willReturn(java.util.Optional.of(todo));
+
+        //when
+        Todo changedTodo = todoService.ChangeStatus(1, new Todo(1, "test", true));
+
+        //then
+        assertEquals(true, changedTodo.getStatus());
+    }
 }
