@@ -33,6 +33,12 @@ public class TodoService {
     }
 
     public Todo ChangeStatus(int id, Todo todo) {
+        Todo findTodo = todoRepository.findById(id).orElse(null);
+        if(findTodo != null) {
+            findTodo.setStatus(todo.getStatus());
+            todoRepository.save(findTodo);
+            return todo;
+        }
         return null;
     }
 }
