@@ -30,4 +30,19 @@ public class TodoServiceTest {
         //then
         assertEquals(todos, todoList);
     }
+
+    @Test
+    void should_return_added_todo_when_add_todo_given_todo() {
+        //given
+        Todo todo = new Todo(1, "test", false);
+        TodoRepository mockTodoReposition = mock(TodoRepository.class);
+        TodoService todoService = new TodoService(mockTodoReposition);
+        given(mockTodoReposition.save(todo)).willReturn(todo);
+
+        //when
+        Todo addedTodo = todoService.addTodo(todo);
+
+        //then
+        assertEquals(todo, addedTodo);
+    }
 }
