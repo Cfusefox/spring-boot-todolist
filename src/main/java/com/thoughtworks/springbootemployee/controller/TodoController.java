@@ -2,7 +2,8 @@ package com.thoughtworks.springbootemployee.controller;
 
 
 import com.thoughtworks.springbootemployee.model.Todo;
-import org.springframework.stereotype.Controller;
+import com.thoughtworks.springbootemployee.service.TodoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,24 +12,27 @@ import java.util.List;
 @RequestMapping("/todo")
 public class TodoController {
 
+    @Autowired
+    private TodoService todoService;
+
     @GetMapping
     public List<Todo> getTodoList() {
-        return null;
+        return todoService.getTodoList();
     }
 
     @PostMapping
-    public Todo addTodo() {
-        return null;
+    public Todo addTodo(@RequestBody Todo Todo) {
+        return todoService.addTodo(Todo);
     }
 
-    @DeleteMapping
-    public Todo deleteTodo() {
-        return null;
+    @DeleteMapping("/{id}")
+    public Todo deleteTodo(@PathVariable int id) {
+        return todoService.deleteTodo(id);
     }
 
-    @PutMapping
-    public Todo changeStatus() {
-        return null;
+    @PutMapping("/{id}")
+    public Todo changeStatus(@PathVariable int id, @RequestBody Todo todo) {
+        return todoService.ChangeStatus(id, todo);
     }
 
 }
