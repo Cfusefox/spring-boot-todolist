@@ -16,7 +16,7 @@ public class TodoService {
     }
 
     public List<Todo> getTodoList() {
-        return null;
+        return todoRepository.findAll();
     }
 
     public Todo addTodo(Todo todo) {
