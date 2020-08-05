@@ -23,7 +23,7 @@ public class TodoService {
         return todoRepository.save(todo);
     }
 
-    public Todo deleteTodo(Todo todo) {
+    public Todo deleteTodo(int id) {
         return null;
     }
 
