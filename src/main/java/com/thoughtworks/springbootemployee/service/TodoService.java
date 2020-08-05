@@ -24,6 +24,11 @@ public class TodoService {
     }
 
     public Todo deleteTodo(int id) {
+        Todo todo = todoRepository.findById(id).orElse(null);
+        if(todo != null) {
+            todoRepository.deleteById(id);
+            return todo;
+        }
         return null;
     }
 
