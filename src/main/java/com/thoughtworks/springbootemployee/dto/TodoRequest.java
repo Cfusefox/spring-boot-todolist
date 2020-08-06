@@ -11,6 +11,8 @@ public class TodoRequest {
         this.status = status;
     }
 
+    public TodoRequest() {}
+
     public Integer getId() {
         return id;
     }

@@ -11,6 +11,10 @@ public class TodoResponse {
         this.status = status;
     }
 
+    public TodoResponse() {
+
+    }
+
     public Integer getId() {
         return id;
     }
