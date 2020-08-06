@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.config;
 
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
-import com.thoughtworks.springbootemployee.exception.NoSuchDataExceptopn;
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,11 +18,11 @@ public class globalExceptionHandler {
         return IllegalOperationException.getIllegalOperationData();
     }
 
-    @ExceptionHandler(NoSuchDataExceptopn.class)
+    @ExceptionHandler(NoSuchDataException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     String handleNoSuchException() {
-        return NoSuchDataExceptopn.getNoSuchData();
+        return NoSuchDataException.getNoSuchData();
     }
 
 

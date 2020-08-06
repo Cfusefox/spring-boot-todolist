@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Todo;
 import com.thoughtworks.springbootemployee.repository.TodoRepository;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,12 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    public List<Todo> getTodoList() {
-        return todoRepository.findAll();
+    public List<Todo> getTodoList() throws NoSuchDataException {
+        List<Todo> todos = todoRepository.findAll();
+        if(todos.isEmpty()) {
+            throw new NoSuchDataException();
+        }
+        return todos;
     }
 
     public Todo addTodo(Todo todo) {

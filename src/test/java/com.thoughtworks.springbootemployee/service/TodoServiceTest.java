@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Todo;
 import com.thoughtworks.springbootemployee.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
@@ -9,13 +10,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 public class TodoServiceTest {
 
     @Test
-    void should_return_todo_list_when_get_todo_list_given_null() {
+    void should_return_todo_list_when_get_todo_list_given_null() throws NoSuchDataException {
         //given
         List<Todo> todos = Arrays.asList(
            new Todo(1, "test1", true),
@@ -75,5 +77,19 @@ public class TodoServiceTest {
 
         //then
         assertEquals(true, changedTodo.getStatus());
+    }
+
+    @Test
+    void should_no_such_data_when_get_todo_list_given_null() {
+        //given
+        TodoRepository mockTodoReposition = mock(TodoRepository.class);
+        TodoService todoService = new TodoService(mockTodoReposition);
+
+        //when
+        Throwable exception = assertThrows(NoSuchDataException.class,
+                () -> todoService.getTodoList());
+
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
     }
 }

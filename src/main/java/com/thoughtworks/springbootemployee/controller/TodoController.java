@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Todo;
 import com.thoughtworks.springbootemployee.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class TodoController {
     private TodoService todoService;
 
     @GetMapping
-    public List<Todo> getTodoList() {
+    public List<Todo> getTodoList() throws NoSuchDataException {
         return todoService.getTodoList();
     }
 
