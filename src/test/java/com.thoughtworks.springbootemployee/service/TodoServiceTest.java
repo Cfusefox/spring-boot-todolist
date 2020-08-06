@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Todo;
 import com.thoughtworks.springbootemployee.repository.TodoRepository;
@@ -35,7 +36,7 @@ public class TodoServiceTest {
     }
 
     @Test
-    void should_return_added_todo_when_add_todo_given_todo() {
+    void should_return_added_todo_when_add_todo_given_todo() throws NoSuchDataException, IllegalOperationException {
         //given
         Todo todo = new Todo(1, "test", false);
         TodoRepository mockTodoReposition = mock(TodoRepository.class);
@@ -50,7 +51,7 @@ public class TodoServiceTest {
     }
 
     @Test
-    void should_return_deleted_todo_when_delete_todo_given_id() {
+    void should_return_deleted_todo_when_delete_todo_given_id() throws NoSuchDataException {
         //given
         Todo todo = new Todo(1, "test", false);
         TodoRepository mockTodoReposition = mock(TodoRepository.class);
@@ -65,7 +66,7 @@ public class TodoServiceTest {
     }
 
     @Test
-    void should_return_changed_todo_when_change_status_given_id_and_todo() {
+    void should_return_changed_todo_when_change_status_given_id_and_todo() throws IllegalOperationException, NoSuchDataException {
         //given
         Todo todo = new Todo(1, "test", false);
         TodoRepository mockTodoReposition = mock(TodoRepository.class);
@@ -91,5 +92,20 @@ public class TodoServiceTest {
 
         //then
         assertEquals(NoSuchDataException.class, exception.getClass());
+    }
+
+    @Test
+    void should_return_illegal_operation_when_change_status_given_id_and_todo() throws IllegalOperationException, NoSuchDataException {
+        //given
+        Todo todo = new Todo(1, "test", false);
+        TodoRepository mockTodoReposition = mock(TodoRepository.class);
+        TodoService todoService = new TodoService(mockTodoReposition);
+
+        //when
+        Throwable exception = assertThrows(IllegalOperationException.class,
+                () -> todoService.ChangeStatus(1, new Todo(2, "test", true)));
+
+        //then
+        assertEquals(IllegalOperationException.class, exception.getClass());
     }
 }

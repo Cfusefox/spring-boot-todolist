@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Todo;
 import com.thoughtworks.springbootemployee.service.TodoService;
@@ -25,17 +26,17 @@ public class TodoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Todo addTodo(@RequestBody Todo Todo) {
+    public Todo addTodo(@RequestBody Todo Todo) throws IllegalOperationException {
         return todoService.addTodo(Todo);
     }
 
     @DeleteMapping("/{id}")
-    public Todo deleteTodo(@PathVariable int id) {
+    public Todo deleteTodo(@PathVariable int id) throws NoSuchDataException {
         return todoService.deleteTodo(id);
     }
 
     @PutMapping("/{id}")
-    public Todo changeStatus(@PathVariable int id, @RequestBody Todo todo) {
+    public Todo changeStatus(@PathVariable int id, @RequestBody Todo todo) throws IllegalOperationException, NoSuchDataException {
         return todoService.ChangeStatus(id, todo);
     }
 

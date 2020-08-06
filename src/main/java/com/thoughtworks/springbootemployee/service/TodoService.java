@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Todo;
 import com.thoughtworks.springbootemployee.repository.TodoRepository;
@@ -24,27 +25,36 @@ public class TodoService {
         return todos;
     }
 
-    public Todo addTodo(Todo todo) {
+    public Todo addTodo(Todo todo) throws IllegalOperationException {
         Todo addedTodo = todoRepository.save(todo);
+        if(addedTodo.getId() == 0) {
+            throw new IllegalOperationException();
+        }
         return addedTodo;
     }
 
-    public Todo deleteTodo(int id) {
+    public Todo deleteTodo(int id) throws NoSuchDataException {
         Todo todo = todoRepository.findById(id).orElse(null);
-        if(todo != null) {
-            todoRepository.deleteById(id);
-            return todo;
+        assert todo != null;
+        if(todo.getId() == 0) {
+            throw new NoSuchDataException();
         }
-        return null;
+
+        todoRepository.deleteById(id);
+        return todo;
     }
 
-    public Todo ChangeStatus(int id, Todo todo) {
-        Todo findTodo = todoRepository.findById(id).orElse(null);
-        if(findTodo != null) {
-            findTodo.setStatus(todo.getStatus());
-            todoRepository.save(findTodo);
-            return todo;
+    public Todo ChangeStatus(int id, Todo todo) throws NoSuchDataException, IllegalOperationException {
+        if(id != todo.getId()) {
+            throw new IllegalOperationException();
         }
-        return null;
+        Todo findTodo = todoRepository.findById(id).orElse(null);
+        assert findTodo != null;
+        if(findTodo.getId() == 0) {
+            throw  new NoSuchDataException();
+        }
+        findTodo.setStatus(todo.getStatus());
+        todoRepository.save(findTodo);
+        return todo;
     }
 }
