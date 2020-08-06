@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.dto.TodoResponse;
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Todo;
@@ -29,10 +30,11 @@ public class TodoServiceTest {
         given(mockTodoReposition.findAll()).willReturn(todos);
 
         //when
-        List<Todo> todoList = todoService.getTodoList();
+        List<TodoResponse> todoList = todoService.getTodoList();
 
         //then
-        assertEquals(todos, todoList);
+        assertEquals(todos.get(0).getId(), todoList.get(0).getId());
+        assertEquals(todos.get(1).getId(), todoList.get(1).getId());
     }
 
     @Test
@@ -44,10 +46,11 @@ public class TodoServiceTest {
         given(mockTodoReposition.save(todo)).willReturn(todo);
 
         //when
-        Todo addedTodo = todoService.addTodo(todo);
+        TodoResponse addedTodo = todoService.addTodo(todo);
 
         //then
-        assertEquals(todo, addedTodo);
+        assertEquals(todo.getContent(), addedTodo.getContent());
+        assertEquals(todo.getStatus(), addedTodo.getStatus());
     }
 
     @Test
@@ -74,7 +77,7 @@ public class TodoServiceTest {
         given(mockTodoReposition.findById(1)).willReturn(java.util.Optional.of(todo));
 
         //when
-        Todo changedTodo = todoService.ChangeStatus(1, new Todo(1, "test", true));
+        TodoResponse changedTodo = todoService.ChangeStatus(1, new Todo(1, "test", true));
 
         //then
         assertEquals(true, changedTodo.getStatus());

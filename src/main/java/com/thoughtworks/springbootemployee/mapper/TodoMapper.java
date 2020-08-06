@@ -12,7 +12,7 @@ public class TodoMapper {
         return todo;
     }
 
-    public TodoResponse mapCompanyResponse(Todo todo) {
+    public TodoResponse mapTodoResponse(Todo todo) {
         TodoResponse todoResponse = new TodoResponse();
         BeanUtils.copyProperties(todo, todoResponse);
         return todoResponse;
