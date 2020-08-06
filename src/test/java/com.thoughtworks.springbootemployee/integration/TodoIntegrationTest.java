@@ -52,6 +52,7 @@ public class TodoIntegrationTest {
         //when then
         mockMvc.perform(post("/todo")
                 .contentType(MediaType.APPLICATION_JSON).content(todo))
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.content").value("test111"))
                 .andExpect(jsonPath("$.status").value(true));
@@ -69,5 +70,25 @@ public class TodoIntegrationTest {
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.content").value("test"))
                 .andExpect(jsonPath("$.status").value(true));
+    }
+
+    @Test
+    void should_return_changed_todo_when_change_status_given_todo() throws Exception {
+        //given
+        Todo todo = new Todo(1, "test", true);
+        Todo savedTodo = todoRepository.save(todo);
+        String changeTodo = "{\n" +
+                "    \"id\": 1,\n" +
+                "    \"content\": \"test\",\n" +
+                "    \"status\": false\n" +
+                "}";
+
+        //when then
+        mockMvc.perform(put("/todo/" + savedTodo.getId())
+                .contentType(MediaType.APPLICATION_JSON).content(changeTodo))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.content").value("test"))
+                .andExpect(jsonPath("$.status").value(false));
     }
 }
